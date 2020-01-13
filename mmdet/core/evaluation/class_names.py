@@ -4,6 +4,10 @@ import mmcv
 def wider_face_classes():
     return ['face']
 
+def refrigerator_classes():
+    return [
+        "fenda", "yingyangkuaixian", "jiaduobao", "maidong", "TYCL", "BSS", "TYYC", "LLDS", "KSFH", "MZY"
+    ]
 
 def voc_classes():
     return [
@@ -89,13 +93,15 @@ def cityscapes_classes():
     ]
 
 
+
 dataset_aliases = {
     'voc': ['voc', 'pascal_voc', 'voc07', 'voc12'],
     'imagenet_det': ['det', 'imagenet_det', 'ilsvrc_det'],
     'imagenet_vid': ['vid', 'imagenet_vid', 'ilsvrc_vid'],
     'coco': ['coco', 'mscoco', 'ms_coco'],
     'wider_face': ['WIDERFaceDataset', 'wider_face', 'WDIERFace'],
-    'cityscapes': ['cityscapes']
+    'cityscapes': ['cityscapes'],
+    "refrigerator":["refrigerator"]
 }
 
 
