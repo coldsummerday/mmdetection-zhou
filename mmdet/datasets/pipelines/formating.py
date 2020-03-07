@@ -175,6 +175,8 @@ class Collect(object):
         data = {}
         img_meta = {}
         for key in self.meta_keys:
+            if key not in results.keys():
+                img_meta[key]=None
             img_meta[key] = results[key]
         data['img_meta'] = DC(img_meta, cpu_only=True)
         for key in self.keys:

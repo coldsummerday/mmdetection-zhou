@@ -62,6 +62,7 @@ class CustomDataset(Dataset):
                     or osp.isabs(self.proposal_file)):
                 self.proposal_file = osp.join(self.data_root,
                                               self.proposal_file)
+
         # load annotations (and proposals)
         self.img_infos = self.load_annotations(self.ann_file)
         if self.proposal_file is not None:

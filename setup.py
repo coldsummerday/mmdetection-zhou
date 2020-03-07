@@ -193,7 +193,7 @@ if __name__ == '__main__':
                 name='deform_conv_cuda',
                 module='mmdet.ops.dcn',
                 sources=[
-                    'src/deform_conv_cuda.cpp',
+                    #'src/deform_conv_cuda.cpp',
                     'src/deform_conv_cuda_kernel.cu'
                 ]),
             make_cuda_ext(
