@@ -15,9 +15,9 @@ from mmdet.apis import init_detector, inference_detector
 
 def parse_args():
     parser = argparse.ArgumentParser(description='MMDet test detector')
-    parser.add_argument('config', help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
-    parser.add_argument("test_dir",help="testimage dir")
+    parser.add_argument('--config', help='test config file path')
+    parser.add_argument('--checkpoint', help='checkpoint file')
+    parser.add_argument("--test_dir",help="testimage dir")
     parser.add_argument('--out', help='output dir')
     args = parser.parse_args()
 
@@ -31,11 +31,12 @@ def main():
     if not os.path.exists(save_path):
         os.mkdir(save_path)
 
+
     model = init_detector(args.config, args.checkpoint, device='cuda:0')
 
     imagefilenames = os.listdir(args.test_dir)
-    imagefilenames = [os.path.join(args.test_dir) for image in imagefilenames]
-    total_lines = []
+    imagefilenames = [os.path.join(args.test_dir,image) for image in imagefilenames]
+    total_lines = ["name,image_id,confidence,xmin,ymin,xmax,ymax\n"]
     for image in imagefilenames:
         img_cv2 = cv2.imread(image)
         base_name = os.path.basename(image)
@@ -45,7 +46,7 @@ def main():
         total_lines.extend(bboxs2lines(base_name.split(".")[0],bboxs))
         cv2.imwrite(os.path.join(save_path,base_name),img_cv2)
 
-    with open(os.path.join(save_path,"image_submission.csv"),'w') as file_handler:
+    with open(os.path.join(save_path,os.path.basename(args.config).split(".")[0]+".csv"),'w') as file_handler:
         for line in total_lines:
             file_handler.write(line)
 
@@ -66,10 +67,10 @@ def draw_bbox(img_cv2,bboxs):
         right_bottom = (box_object['x2'], box_object['y2'])
         cv2.rectangle(
             img_cv2, left_top, right_bottom, (255, 0, 0), 2)
-        label_text = "{}:{.2f}".format(box_object['label'],box_object["confidence"])
+        label_text = "{}:{}".format(box_object['label'],box_object["confidence"])
 
         cv2.putText(img_cv2, label_text, (box_object['x1'],box_object['y1'] - 2),
-                    cv2.FONT_HERSHEY_COMPLEX,6,(0,0,255),3)
+                    cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),1)
     return img_cv2
 
 def result2objects(result,classes,score_threshold=0.5):
@@ -94,29 +95,6 @@ def result2objects(result,classes,score_threshold=0.5):
                        "confidence": float(bbox[-1])}
         box_objects.append(object_dict)
     return box_objects
-"""
-        image_cv2 = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-        ori_height, ori_width, _ = image_cv2.shape
-        result = inference_detector(model, image_cv2)
 
-        
-        bboxes = np.vstack(result)
-        labels = [
-            np.full(bbox.shape[0], i, dtype=np.int32)
-            for i, bbox in enumerate(result)
-        ]
-        labels = np.concatenate(labels)
-        # 过滤掉分数过低的目标框
-        inds = bboxes[:, -1] > score_threshold
-
-        bboxes = bboxes[inds, :]
-        labels = labels[inds]
-        box_objects = []
-        for bbox, label in zip(bboxes, labels):
-            object_dict = {"label": model.CLASSES[label],
-                           "x1": int(bbox[0]),
-                           "y1": int(bbox[1]),
-                           "x2": int(bbox[2]),
-                           "y2": int(bbox[3]),
-                           "confidence": float(bbox[-1])}
-"""
+if __name__ == "__main__":
+    main()
