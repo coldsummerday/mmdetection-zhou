@@ -30,6 +30,7 @@ def build_conv_layer(cfg, *args, **kwargs):
     if cfg is None:
         cfg_ = dict(type='Conv')
     else:
+
         assert isinstance(cfg, dict) and 'type' in cfg
         cfg_ = cfg.copy()
 

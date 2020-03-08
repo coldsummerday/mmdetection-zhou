@@ -2,7 +2,7 @@
 #单卡2080ti，
 model = dict(
     type='ATSS',
-    pretrained='torchvision://resnet50',
+    pretrained='open-mmlab://resnext101_64x4d',
     backbone=dict(
         type='ResNeXt',
         depth=101,
@@ -13,7 +13,7 @@ model = dict(
         frozen_stages=1,
         style='pytorch',
         dcn=dict(
-            modulated=False, deformable_groups=1, fallback_on_stride=False),
+            type='DCN', deformable_groups=1, fallback_on_stride=False),
         stage_with_dcn=(False, True, True, True)),
     neck=dict(
         type='FPN',
