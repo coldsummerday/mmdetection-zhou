@@ -8,6 +8,12 @@ from .custom import CustomDataset
 from .registry import DATASETS
 from mmdet.core import eval_map, eval_recalls
 
+def readlines(path):
+    with open(path,'r',encoding='utf-8') as file_handler:
+        lines = file_handler.readlines()
+        lines = [line.rstrip() for line in lines if line!='' ]
+    return lines
+
 @DATASETS.register_module
 class UnderwaterVOCDataset(CustomDataset):
     CLASSES = ["holothurian", "echinus", "scallop", "starfish"]
@@ -18,7 +24,7 @@ class UnderwaterVOCDataset(CustomDataset):
 
     def load_annotations(self, ann_file):
         img_infos = []
-        img_ids = mmcv.list_from_file(ann_file)
+        img_ids = readlines(ann_file)
         with open(osp.join(self.data_root,'image2hw.json'),'r') as file_handler:
             hw_json = json.load(file_handler)
 
@@ -31,7 +37,7 @@ class UnderwaterVOCDataset(CustomDataset):
 
     def get_ann_info(self, idx):
         img_id = self.img_infos[idx]['id']
-        xml_path = osp.join(self.data_root, 'train','box'
+        xml_path = osp.join(self.data_root, 'train','box',
                             '{}.xml'.format(img_id))
         tree = ET.parse(xml_path)
         root = tree.getroot()
