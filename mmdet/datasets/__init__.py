@@ -10,9 +10,10 @@ from .wider_face import WIDERFaceDataset
 from .xml_style import XMLDataset
 from .refrigeratorCocoDataset import  RefrigeratorCocoDataset
 from .underwaterdataset import UnderWaterDataset
+from .underwaterVOCDataset import UnderwaterVOCDataset
 __all__ = [
     'CustomDataset', 'XMLDataset', 'CocoDataset', 'VOCDataset',
     'CityscapesDataset', 'GroupSampler', 'DistributedGroupSampler',
     'build_dataloader', 'ConcatDataset', 'RepeatDataset', 'WIDERFaceDataset',
-    'DATASETS', 'build_dataset','refrigeratorCocoDataset',"UnderWaterDataset"
+    'DATASETS', 'build_dataset','refrigeratorCocoDataset',"UnderWaterDataset","UnderwaterVOCDataset"
 ]
